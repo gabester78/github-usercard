@@ -2,6 +2,9 @@
            (replacing the palceholder with your Github name):
            https://api.github.com/users/<your name>
 */
+axios.get("https://api.github.com/users/gabester78").then(response => {
+  console.log(response);
+});
 
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
@@ -45,6 +48,61 @@ const followersArray = [];
 </div>
 
 */
+const cards = document.querySelector(".cards");
+
+function gitCard(data) {
+  const cardContainer = document.createElement("div");
+  cardContainer.classList.add("card");
+  cards.append(cardContainer);
+
+  const img = document.createElement("img");
+  img.src = data.avatar_url;
+  cardContainer.append(img);
+
+  const infoContainer = document.createElement("div");
+  cardContainer.classList.add("card-info");
+  cardContainer.append(infoContainer);
+
+  const name = document.createElement("h3");
+  name.classList.add("name");
+  h3.textContent = data.name;
+
+  const userName = document.createElement("p");
+  userName.classList.add("username");
+  h3.textContent = data.login;
+
+  const location = document.createElement("p");
+  location.textContent = data.location;
+
+  const profile = document.createElement("p");
+  profile.textContent = data.html_url;
+
+  const followers = document.createElement("p");
+  followers.textContent = data.followers;
+
+  const following = document.createElement("p");
+  following.textContent = data.following;
+
+  const bio = document.createElement("p");
+  bio.textContent = data.bio;
+
+  infoContainer.append(
+    name,
+    userName,
+    location,
+    profile,
+    followers,
+    following,
+    bio
+  );
+
+  return div;
+}
+
+data.forEach(item => {
+  console.log(gitCard(item));
+  cards.append(gitCard(item));
+});
 
 /* List of LS Instructors Github username's: 
   tetondan
