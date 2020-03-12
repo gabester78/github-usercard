@@ -2,6 +2,9 @@
            (replacing the palceholder with your Github name):
            https://api.github.com/users/<your name>
 */
+// axios.get("https://api.github.com/users/gabester78").then(response => {
+//   console.log(response);
+// });
 
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
@@ -24,7 +27,13 @@
           user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const followersArray = [
+  "janecyyu",
+  "ryangclark",
+  "jcrobles1989",
+  "Riley-Robinson",
+  "Diddleslip"
+];
 
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
@@ -45,6 +54,67 @@ const followersArray = [];
 </div>
 
 */
+
+function gitCard(data) {
+  const cards = document.querySelector(".cards");
+
+  const cardContainer = document.createElement("div");
+  cardContainer.classList.add("card");
+  cards.append(cardContainer);
+
+  const img = document.createElement("img");
+  img.src = data.avatar_url;
+  cardContainer.append(img);
+
+  const infoContainer = document.createElement("div");
+  cardContainer.classList.add("card-info");
+  cardContainer.append(infoContainer);
+
+  const name = document.createElement("h3");
+  name.classList.add("name");
+  name.textContent = data.name;
+
+  const userName = document.createElement("p");
+  userName.classList.add("username");
+  userName.textContent = data.login;
+
+  const location = document.createElement("p");
+  location.textContent = `Location: ${data.location}`;
+
+  const profile = document.createElement("p");
+  profile.textContent = `Profile: ${data.html_url}`;
+
+  const followers = document.createElement("p");
+  followers.textContent = `Followers: ${data.followers}`;
+
+  const following = document.createElement("p");
+  following.textContent = `Following: ${data.following}`;
+
+  const bio = document.createElement("p");
+  bio.textContent = `Bio: ${data.bio}`;
+
+  infoContainer.append(
+    name,
+    userName,
+    location,
+    profile,
+    followers,
+    following,
+    bio
+  );
+
+  return div;
+}
+
+followersArray.map(follower => {
+  axios
+    .get("https://api.github.com/users/" + follower)
+    .then(obj => gitCard(obj.data));
+});
+
+axios
+  .get("https://api.github.com/users/gabester78")
+  .then(obj => gitCard(obj.data));
 
 /* List of LS Instructors Github username's: 
   tetondan
