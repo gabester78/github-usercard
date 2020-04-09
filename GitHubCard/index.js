@@ -68,10 +68,11 @@ function gitCard(data) {
 
   const image = document.createElement("img");
   image.src = data.avatar_url;
+  container.append(image);
 
   const infoContainer = document.createElement("div");
   infoContainer.classList.add("card-info");
-  cardContainer.append(infoContainer);
+  container.append(infoContainer);
 
   const name = document.createElement("h3");
   name.classList.add("name");
@@ -82,7 +83,9 @@ function gitCard(data) {
   userName.textContent = data.login;
 
   const location = document.createElement("p");
-  location.textContent = `Location: ${data.location}`;
+  if (data.location) {
+    location.textContent = `Location: ${data.location}`;
+  }
 
   const profile = document.createElement("p");
   profile.textContent = `Profile ${data.html_url}`;
@@ -94,7 +97,9 @@ function gitCard(data) {
   following.textContent = `Following: ${data.following}`;
 
   const bio = document.createElement("p");
-  bio.textContent = `Bio: ${data.bio}`;
+  if (data.bio) {
+    bio.textContent = `Bio: ${data.bio}`;
+  }
 
   infoContainer.append(
     name,
@@ -109,16 +114,28 @@ function gitCard(data) {
   return container;
 }
 
+const card = document.querySelector(".cards");
+
 axios
   .get("https://api.github.com/users/gabester78")
   .then((response) => {
     const cardContent = response.data;
-    cardContent.forEach((data) => {
-      const container = gitCard(data);
-      entryPoint.appendChild(container);
-    });
+    const container = gitCard(cardContent);
+    card.appendChild(container);
   })
   .catch((error) => {
     console.log("Error:", error);
   });
 
+followersArray.map((follower) => {
+  axios
+    .get("https://api.github.com/users/" + follower)
+    .then((response) => {
+      const cardContent = response.data;
+      const container = gitCard(cardContent);
+      card.appendChild(container);
+    })
+    .catch((error) => {
+      console.log("Error:", error);
+    });
+});
