@@ -1,4 +1,4 @@
-import axios from "axios";
+// import axios from "axios";
 
 /* Step 1: using axios, send a GET request to the following URL 
            (replacing the palceholder with your Github name):
@@ -88,7 +88,11 @@ function gitCard(data) {
   }
 
   const profile = document.createElement("p");
-  profile.textContent = `Profile ${data.html_url}`;
+  profile.textContent = "Profile: ";
+
+  const link = document.createElement("a");
+  link.textContent = data.html_url;
+  profile.appendChild(link);
 
   const followers = document.createElement("p");
   followers.textContent = `Followers: ${data.followers}`;
@@ -116,24 +120,34 @@ function gitCard(data) {
 
 const card = document.querySelector(".cards");
 
+// axios
+//   .get("https://api.github.com/users/gabester78")
+//   .then((response) => {
+//     const cardContent = response.data;
+//     const container = gitCard(cardContent);
+//     card.appendChild(container);
+//   })
+//   .catch((error) => {
+//     console.log("Error:", error);
+//   });
+
 axios
   .get("https://api.github.com/users/gabester78")
   .then((response) => {
-    const cardContent = response.data;
-    const container = gitCard(cardContent);
-    card.appendChild(container);
+    gitCard(response.data);
+    card.appendChild(gitCard(response.data));
   })
   .catch((error) => {
     console.log("Error:", error);
   });
 
-followersArray.map((follower) => {
+followersArray.map((data) => {
+  console.log(data);
   axios
-    .get("https://api.github.com/users/" + follower)
+    .get("https://api.github.com/users/" + data)
     .then((response) => {
-      const cardContent = response.data;
-      const container = gitCard(cardContent);
-      card.appendChild(container);
+      gitCard(response.data);
+      card.appendChild(gitCard(response.data));
     })
     .catch((error) => {
       console.log("Error:", error);
