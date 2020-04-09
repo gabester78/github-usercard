@@ -1,3 +1,5 @@
+import axios from "axios";
+
 /* Step 1: using axios, send a GET request to the following URL 
            (replacing the palceholder with your Github name):
            https://api.github.com/users/<your name>
@@ -24,7 +26,13 @@
           user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const followersArray = [
+  "janecyyu",
+  "ryangclark",
+  "jcrobles1989",
+  "Riley-Robinson",
+  "Diddleslip",
+];
 
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
@@ -53,3 +61,64 @@ const followersArray = [];
   luishrd
   bigknell
 */
+
+function gitCard(data) {
+  const container = document.createElement("div");
+  container.classList.add("card");
+
+  const image = document.createElement("img");
+  image.src = data.avatar_url;
+
+  const infoContainer = document.createElement("div");
+  infoContainer.classList.add("card-info");
+  cardContainer.append(infoContainer);
+
+  const name = document.createElement("h3");
+  name.classList.add("name");
+  name.textContent = data.name;
+
+  const userName = document.createElement("p");
+  userName.classList.add("username");
+  userName.textContent = data.login;
+
+  const location = document.createElement("p");
+  location.textContent = `Location: ${data.location}`;
+
+  const profile = document.createElement("p");
+  profile.textContent = `Profile ${data.html_url}`;
+
+  const followers = document.createElement("p");
+  followers.textContent = `Followers: ${data.followers}`;
+
+  const following = document.createElement("p");
+  following.textContent = `Following: ${data.following}`;
+
+  const bio = document.createElement("p");
+  bio.textContent = `Bio: ${data.bio}`;
+
+  infoContainer.append(
+    name,
+    userName,
+    location,
+    profile,
+    followers,
+    following,
+    bio
+  );
+
+  return container;
+}
+
+axios
+  .get("https://api.github.com/users/gabester78")
+  .then((response) => {
+    const cardContent = response.data;
+    cardContent.forEach((data) => {
+      const container = gitCard(data);
+      entryPoint.appendChild(container);
+    });
+  })
+  .catch((error) => {
+    console.log("Error:", error);
+  });
+
